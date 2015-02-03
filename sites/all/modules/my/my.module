@@ -1,0 +1,525 @@
+<?php
+/**
+ * implement hook_menu
+ */
+function my_menu() {
+  $items = array();
+    $items['get_content'] = array(
+        'title' => t('content'),
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('my_fill_data'),
+        'access arguments' => 'access administration pages',
+        'access callback' => TRUE
+    );
+  $items['admin/tintuc'] = array(
+    'title' => t('Lay niu'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('news_template_get'),
+    'access arguments' => 'access administration pages',
+    'access callback' => TRUE
+  );
+    return $items;
+}
+
+function news_template_get() {
+  $form = array();
+  $form['template'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Thiết lập nguồn tin'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['template']['nguon'] = array(
+    '#title' => t('Tên nguồn'),
+    '#type' => 'textfield',
+  );
+  $form['template']['url'] = array(
+    '#title' => t('Đường dẫn tin'),
+    '#type' => 'textfield',
+  );
+  $form['template']['get_name'] = array(
+    '#title' => t('Lựa chọn chuyên mục'),
+    '#type' => 'select',
+    '#default_value' => variable_get('get_name', 1),
+    '#options' => return_term_cat(),
+  );
+  $form['template']['hot'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hot'),
+  );
+  $form['dangtin'] = array(
+    '#type' => 'submit',
+    '#value' => t('Đăng tin'),
+  );
+  return $form;
+}
+
+function news_template_get_submit() {
+  $url = $_POST['url'];
+  news_import_node($url);
+}
+
+function news_import_node($url) {
+  $sites_html = file_get_contents($url);
+  if(strpos($url, 'dantri.com.vn')> 0)
+    $sites_html = strip_tags($sites_html,'<p><div><img><span><ul><li><h2><h3><h4><strong><br/><b><i><meta><a><table><tbody><tr><td>');
+  else
+    $sites_html = strip_tags($sites_html,'<p><div><img><span><ul><li><h2><h3><h4><strong><br/><b><i><meta>');
+  $html = new DOMDocument();
+  @$html->loadHTML('<?xml encoding="UTF-8">' . $sites_html);
+  //@$html->loadHTML($sites_html);
+
+  $meta_og_img = null;
+//Get all meta tags and loop through them.
+  foreach($html->getElementsByTagName('meta') as $meta) {
+    //If the property attribute of the meta tag is og:image
+    if($meta->getAttribute('property')=='og:image'){
+      //Assign the value from content attribute to $meta_og_img
+      $meta_og_img = $meta->getAttribute('content');
+    }
+    if($meta->getAttribute('property')=='og:title'){
+      //Assign the value from content attribute to $meta_og_img
+      $meta_og_title = $meta->getAttribute('content');
+    }
+    if($meta->getAttribute('property')=='og:description'){
+      //Assign the value from content attribute to $meta_og_img
+      $meta_og_des = $meta->getAttribute('content');
+    }
+    if($meta->getAttribute('itemprop')=='datePublished'){
+      //Assign the value from content attribute to $meta_og_img
+      $meta_og_time = $meta->getAttribute('content');
+    }
+  }
+
+
+ /* if(strpos($url, 'kenh14.vn') >0) {
+    $content = my_get_noidung('class','content',$sites_html);
+    $meta_og_title = trim($meta_og_title," - Kenh14.vn");
+  }
+  elseif (strpos($url, 'tiin.vn') >0) {
+    $content = my_get_noidung('id','body-content',$sites_html);
+    $loai = my_get_noidung('class','note-pages',$sites_html);
+    $content = str_replace($loai,' ',$content);
+    $loai = my_get_noidung('class','note-pages',$content);
+    $content =str_replace($loai,' ',$content);
+    $content = str_replace('font-hook_node_presavefamily: tahoma,geneva,sans-serif',' ',$content);
+    $content = str_replace('font-size',' ',$content);
+  }
+  elseif(strpos($url, 'ngoisao.vn')> 0) {
+    $content = my_get_noidung('class','detail-content',$sites_html);
+  }
+  elseif(strpos($url, 'truyenngan')> 0) {
+    $content = my_get_noidung('class','maincontent',$sites_html);
+    $content = str_replace('"images','"http://www.truyenngan.com.vn/images',$content);
+  }
+  elseif(strpos($url, 'afamily')> 0) {
+    $content = my_get_noidung('class','detail_content',$sites_html);
+    $ret = $sites_html->find('div.detail_content');
+
+  }
+  elseif(strpos($url, 'gocuatraitim')> 0) {
+    $content1 = my_get_noidung('class','entry-content',$sites_html);
+    $content2 = my_get_noidung('class','social4i',$sites_html);
+
+    $content = str_replace($content2,' ',$content1);
+  }
+  elseif(strpos($url, 'tintuconline')> 0) {
+    $doc = new DOMDocument();
+    $doc->LoadHTMLFile($url);
+    $d = new DOMDocument();
+    $d->appendChild($d->importNode($doc->getElementById('newsContent'), true));
+    $content = trim(preg_replace('#(^<[^>]+>|</[^>]+>$)#', '', $d->saveHTML()));
+    $content = str_replace('; width: 480px','',$content);
+
+  }
+
+  //lam cho quyet
+  elseif(strpos($url, 'dantri.com.vn') >0) {
+    $content1 = my_get_noidung('class','fon34.mt3.mr2.fon43.detail-content',$sites_html);
+    $content2 = my_get_noidung('class','news-tag',$sites_html);
+    $content3 = my_get_noidung_a('href','http://www.fica.vn/',$sites_html);
+    $content = str_replace($content2,'',$content1);
+    $content = str_replace($content3,'',$content);
+  }*/
+  if(strpos($url, 'vnexpress.net') >0) {
+    $content = my_get_noidung('class','fck_detail.width_common',$sites_html);
+
+  }
+
+  $news = new stdClass();
+  $news->type = 'article';
+  $news->status = 1;
+  $news->timestamp = strtotime("now");
+  $news->uid = 1;
+  $news->title = $meta_og_title;
+  $url = $meta_og_img;
+  $news->comment = 2;
+  $news->promote = 1;
+  $news->pathauto_perform_alias = TRUE;
+  $news->field_chuyen_muc[LANGUAGE_NONE]['0']['tid'] = $_POST['get_name'];
+  $file_info = system_retrieve_file($url, 'public://pictures/', TRUE);
+  if($file_info->fid) {
+    $news->field_image[LANGUAGE_NONE]['0']['fid'] = $file_info->fid;//assign fid
+    $news->field_image[LANGUAGE_NONE]['0']['filename'] = $file_info->filename;
+    $news->field_image[LANGUAGE_NONE]['0']['uri'] = $file_info->uri;
+    $news->field_image[LANGUAGE_NONE]['0']['filemime'] = $file_info->filemime;
+    $news->field_image[LANGUAGE_NONE]['0']['title'] = $meta_og_title;
+    $news->field_image[LANGUAGE_NONE]['0']['alt'] = $meta_og_title;
+  }
+ /* $news->field_tags[LANGUAGE_NONE]['0']['tid'] = array_rand(return_term_tag());
+  $news->field_tags[LANGUAGE_NONE]['1']['tid'] = array_rand(return_term_tag());
+  $news->field_tags[LANGUAGE_NONE]['3']['tid'] = array_rand(return_term_tag());
+  $news->field_tags[LANGUAGE_NONE]['4']['tid'] = array_rand(return_term_tag());
+  $news->field_tags[LANGUAGE_NONE]['5']['tid'] = array_rand(return_term_tag());*/
+  $news->language = LANGUAGE_NONE;
+  $news->field_teaser[0]['value'] = $meta_og_des;
+  $news->body['und'][0]['value'] = $content;
+  $news->body['und'][0]['format'] = 'filtered_html';
+ // $news->field_url_anh[0]['value'] = '<img widht="134" src ="'.$meta_og_img.'">';
+  //$news->field_nguon[0]['value'] = $url;
+  node_save($news);
+ // drupal_goto('node/'.$news->nid);
+}
+
+function my_fill_data() {
+  $form = array();
+  $form['get_value_term'] = array(
+    '#title' => t('Global setting'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+  );
+
+  $form['get_value_term']['get_name'] = array(
+    '#title' => t('Lua chon term'),
+    '#type' => 'select',
+    '#default_value' => variable_get('get_name', 1),
+    '#options' => return_term_cat(),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Lấy tin'),
+  );
+  return $form;
+}
+
+function my_fill_data_submit($form, &$form_state)  {
+  $term =   ($form_state['values']['get_name']);
+  get_content($term);
+}
+function return_term_cat() {
+    $all= taxonomy_get_tree(2);
+    $term = array();
+    foreach($all as $k ) {
+        $term[$k->tid] =  $k -> name;
+    }
+    return $term;
+}
+
+function return_term_tag() {
+    $all= taxonomy_get_tree(1);
+    $term = array();
+    foreach($all as $k ) {
+        $term[$k->tid] =  $k -> name;
+    }
+    return $term;
+}
+function get_content($term) {
+   // db_set_active('crawler');
+    $result = db_select('news', 'n')
+        ->fields('n',array('id','name','brief','description','image_url'))
+        ->execute();
+  //  db_set_active('default');
+  $i = 0;
+ while ($record = $result->fetchAssoc()) {
+         $node = new stdClass;
+         $node->type = 'article';
+         $node->status = 1;
+         $node->uid = 1;
+         $node->title = $record['name'];
+         $node->promote = 1;
+         $node->pathauto_perform_alias = TRUE;
+		 $node->comment = 2;
+         if($i<=5) {
+            $node->created = strtotime("now");
+         }
+         else {
+           $time = $i%5;
+           $node->created = strtotime("now") + 86400*$time;
+         }
+         $url = 'http://tinhta.com/laytin/'.$record['image_url'];
+         $file_info = system_retrieve_file($url, 'public://pictures/', TRUE);
+         if($file_info->fid) {
+             $node->field_image[LANGUAGE_NONE]['0']['fid'] = $file_info->fid;//assign fid
+             $node->field_image[LANGUAGE_NONE]['0']['filename'] = $file_info->filename;
+             $node->field_image[LANGUAGE_NONE]['0']['uri'] = $file_info->uri;
+             $node->field_image[LANGUAGE_NONE]['0']['filemime'] = $file_info->filemime;
+             $node->field_image[LANGUAGE_NONE]['0']['title'] = $record['name'];
+             $node->field_image[LANGUAGE_NONE]['0']['alt'] = $record['name'];
+         }
+
+         $node->field_chuyen_muc[LANGUAGE_NONE]['0']['tid'] = $term;
+         $node->field_tags[LANGUAGE_NONE]['0']['tid'] = array_rand(return_term_tag());
+         $node->field_tags[LANGUAGE_NONE]['1']['tid'] = array_rand(return_term_tag());
+         $node->field_tags[LANGUAGE_NONE]['3']['tid'] = array_rand(return_term_tag());
+         $node->field_tags[LANGUAGE_NONE]['4']['tid'] = array_rand(return_term_tag());
+         //$node->field_chuyen_muc[LANGUAGE_NONE][0]['taxonomy_term']->name = 'Làm ??p';
+         //$node->field_chuyen_muc[LANGUAGE_NONE]['0']['taxonomy_term']->vid = 2;
+         //$node->field_chuyen_muc[LANGUAGE_NONE]['0']['taxonomy_term']->tid = 894;
+
+         $node->timestamp = strtotime("now");
+         $node->sticky = 0;
+     	 $node->language = LANGUAGE_NONE;
+
+         $teaser = $record['brief'];
+         if(empty($teaser)) {
+           $node ->body['und'][0]['summary'] = drupal_substr(strip_tags($record['description']),0,300);
+         }
+		else {
+	    $node->body['und'][0]['summary'] =  $teaser;
+		}
+         $node->body['und'][0]['value'] = $record['description'];
+         $node->body['und'][0]['format'] = 'filtered_html';
+         $node->revision = 0;
+
+         node_save($node);
+		 $i ++;
+		 
+ }
+  die('Đã lấy xong tin');
+}
+
+
+function my_get_noidung($attr,$value,$sites_html) {
+
+  $pattern_long = '{           # recursive regex to capture contents of "main" DIV
+<div\s+'.$attr.'="'.$value.'"\s*>              # match the "main" class DIV opening tag
+  (                                   # capture "main" DIV contents into $1
+    (?:                               # non-cap group for nesting * quantifier
+      (?: (?!<div[^>]*>|</div>). )++  # possessively match all non-DIV tag chars
+    |                                 # or
+      <div[^>]*>(?1)</div>            # recursively match nested <div>xyz</div>
+    )*                                # loop however deep as necessary
+  )                                   # end group 1 capture
+</div>                                # match the "main" class DIV closing tag
+}six';  // single-line (dot matches all), ignore case and free spacing modes ON
+
+// short version of same regex
+  $pattern_short = '{<div\s+'.$attr.'="'.$value.'"\s*>((?:(?:(?!<div[^>]*>|</div>).)++|<div[^>]*>(?1)</div>)*)</div>}si';
+
+  $matchcount = preg_match_all($pattern_long, $sites_html, $matches);
+// $matchcount = preg_match_all($pattern_short, $data, $matches);
+
+  return $matches[1][0];
+
+}
+
+
+function my_get_noidung_a($attr,$value,$sites_html) {
+
+  $pattern_long = '{           # recursive regex to capture contents of "main" DIV
+<a\s+'.$attr.'="'.$value.'"\s*>              # match the "main" class DIV opening tag
+  (                                   # capture "main" DIV contents into $1
+    (?:                               # non-cap group for nesting * quantifier
+      (?: (?!<a[^>]*>|</a>). )++  # possessively match all non-DIV tag chars
+    |                                 # or
+      <a[^>]*>(?1)</a>            # recursively match nested <div>xyz</div>
+    )*                                # loop however deep as necessary
+  )                                   # end group 1 capture
+</a>                                # match the "main" class DIV closing tag
+}six';  // single-line (dot matches all), ignore case and free spacing modes ON
+
+// short version of same regex
+  $pattern_short = '{<a\s+'.$attr.'="'.$value.'"\s*>((?:(?:(?!<a[^>]*>|</a>).)++|<a[^>]*>(?1)</a>)*)</a>}si';
+
+  $matchcount = preg_match_all($pattern_long, $sites_html, $matches);
+// $matchcount = preg_match_all($pattern_short, $data, $matches);
+
+  return $matches[1][0];
+
+}
+
+
+function my_block_info() {
+  $blocks['vote'] = array(
+    'info' => t('Khảo sát Poll'),
+  );
+  $blocks['test'] = array(
+    'info' => t('Test'),
+  );
+  $blocks['noidung'] = array(
+    'info' => t('content_detail'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function my_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'vote':
+      $block['content'] = my_get_content_test();
+      break;
+    case 'test':
+      $block['content'] = my_get_content_test();
+      break;
+    case 'noidung':
+      $block['content'] = my_get_content_detail();
+      break;
+  }
+  return $block;
+}
+
+function my_get_content_detail() {
+  $node1 = node_load(arg(1));
+  $month = $node1->field_month['und'][0]['value'];
+  $hoten = $node1->title;
+  $day = $node1 ->field_day['und'][0]['value'];
+  $ngay = $month*30 + $day;
+
+  $arr = array(1,3,5,7,8,10,12);
+  if( in_array($month,$arr)) {
+    $ngay = $month*30 + $day + 1;
+  }
+  if($ngay > 110 && $ngay < 140) {
+    $image = 'http://tinhta.com/sites/default/files/cung/bd.png';
+    $a = 25222;
+    $output = 'Bạch Dương';
+  }
+  if($ngay > 139 && $ngay < 171) {
+    $image = 'http://tinhta.com/sites/default/files/cung/kn.png';
+    $a = 25211;
+    $output = 'Kim Ngưu';
+  }
+  if($ngay > 170 && $ngay < 202) {
+    $image = 'http://tinhta.com/sites/default/files/cung/sot.png';
+    $a = 25212;
+    $output = 'Song Tử';
+  }
+  if($ngay > 201 && $ngay < 233) {
+    $image = 'http://tinhta.com/sites/default/files/cung/cg.png';
+    $a = 25209;
+    $output = 'Cự Giải';
+  }
+  if($ngay > 232 && $ngay < 263) {
+    $image = 'http://tinhta.com/sites/default/files/cung/st.png';
+    $a = 25213;
+    $output = 'Sư Tử';
+  }
+  if($ngay > 262 && $ngay < 293) {
+    $image = 'http://tinhta.com/sites/default/files/cung/xn.png';
+	$a = 25214;
+    $output = 'Xử Nữ';
+  }
+  if($ngay > 292 && $ngay < 324) {
+    $image = 'http://tinhta.com/sites/default/files/cung/tb.png';
+    $a = 25215;
+    $output = 'Thiên Bình';
+  }
+  if($ngay > 323 && $ngay < 352) {
+    $image = 'http://tinhta.com/sites/default/files/cung/hc.png';
+    $a = 25216;
+    $output = 'Bọ Cạp';
+  }
+
+  if($ngay > 352 && $ngay < 383) {
+    $image = 'http://tinhta.com/sites/default/files/cung/nm.png';
+    $a = 25217;
+    $output = 'Nhân Mã';
+  }
+  if($ngay > 382 && $ngay < 392) {
+    $image = 'http://tinhta.com/sites/default/files/cung/mk.png';
+    $a = 25218;
+    $output = 'Ma Kết';
+  }
+  if($ngay > 29 && $ngay < 50) {
+    $image = 'http://tinhta.com/sites/default/files/cung/mk.png';
+    $a = 25218;
+    $output = 'Ma Kết';
+  }
+  if($ngay > 78 && $ngay < 111) {
+    $image = 'http://tinhta.com/sites/default/files/cung/sn.png';
+    $a = 25220;
+    $output = 'Song Ngư';
+  }
+  if($ngay > 49 && $ngay < 79) {
+    $image = 'http://tinhta.com/sites/default/files/cung/bb.png';
+    $a = 25219;
+    $output = 'Bảo Bình';
+  }
+  $node = node_load($a);
+  $nd = '<div style="text-align: center;font-size:18px;"> Họ Tên: '.$hoten.' </div>';
+  $nd .= '<div style="text-align: center; font-size:18px;">Thuộc cung: '.$output.'</div><br />';
+  $nd .= '<div style="text-align: center"><img src="'.$image.'" /></div>';
+  $nd .= $node ->body['und'][0]['value'];
+
+  return $nd;
+}
+
+function my_get_content_test(){
+  return 'xin chao dong chi tri';
+}
+
+function my_get_content_vote() {
+  if(!isset($_SESSION['poll'] )) {
+    $_SESSION['poll'] = 1;
+  $output = '
+<div id="poll">
+    <h3>Yêu nhau thì quan hệ tình dục là chuyện bình thường?</h3>
+    <form>
+        Đống ý:
+        <input type="radio" name="vote" value="0" onclick="getVote(this.value)">
+        <br>Không đồng ý:
+        <input type="radio" name="vote" value="1" onclick="getVote(this.value)">
+    </form>
+</div>
+';
+  return $output;
+  }
+  else
+    return;
+}
+
+function my_node_presave($node) {
+
+}
+
+function my_form_alter(&$form, &$form_state, $form_id) {
+
+  if($form_id == 'thao_luan_node_form') {
+  global $user;
+
+   $time = time();
+    if($time % 4 != 0) {
+     $form['#validate'][] = 'starting_drupal_dev_form_validate';
+	}
+ 
+   $tinhan = '<br /><div style="font-style:italic;color:red;text-align:center;padding: 0 6px;">Khi bạn nhấn nút <b>"lưu"</b> sẽ tạo ra bài báo mang tính relax. Bài viết sẽ ở chế độ private - không ai có thể xem được. Muốn bạn bè xem được để relax, bạn hãy share bài viết lên facebook. Bài viết cũng chỉ tồn tại 1 ngày kể từ lúc bắt đầu tạo. Sau 1 ngày, bài báo sẽ hiện lên cảnh báo <i>"đây không phải là sự thật"</i>. Sau 7 ngày bài báo sẽ bị hủy hoàn toàn<br /> Rất vui vì bạn đã tham gia trò chơi. Chúc bạn có những giây phút vui vẻ<br/>Nếu cần hỗ trợ bạn liên lạc với chúng tôi- email: duyanh.bka@gmail.com. SĐT : 0167 501 8232</div>';
+    $form['title']['#type'] = 'hidden';
+    $form['title']['#required'] = false;
+    $form['field_hoten']['#prefix'] = '<div style ="color:red;text-align: center;font-style: italic;font-weight: bold;font-size: 16px;">Relax - Bạn điền đủ thông tin rồi nhấn "LƯU". </div>';
+    $form['actions']['submit'];
+   // $form['#attributes'] = array('onsubmit' => 'return false');
+	$form['actions']['submit']['#suffix'] = '<div class ="tint">'.$tinhan.'</div>';
+	$form['actions']['submit']['#prefix'] ='<div><script type="text/javascript" src="http://tinhta.gsspcln.jp/sdk/t/20992.js"></script></div>';
+  }
+  if($form_id =='comment_node_photos_form') {
+    hide($form['subject']);
+
+  }
+}
+function starting_drupal_dev_form_validate($form, &$form_state) {
+  form_set_error('title', '<div> Tạo bài không thành công!</div>Việc tạo bài relax chỉ thành công ngẫu nhiên. Vì có nhiều người tạo cùng thời điểm, nên hệ thống sẽ chọn ra 1 người bất kỳ. Bạn vui lòng thử lại ở thời điểm khác.');
+  drupal_set_message();
+}
+function my_js_alter(&$javascript) {
+  // remove the JS that does the show/hide summary
+ // unset($javascript['modules/field/modules/text/text.js']);
+}
+
+function my_node_insert($node) {
+  drupal_goto('node/'.$node->nid);
+}
