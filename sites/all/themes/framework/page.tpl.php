@@ -33,32 +33,7 @@
         <?php if (!empty($page['navigation'])): ?> <!--if block in navigation region, override $main_menu and $secondary_menu-->
           <?php print render($page['navigation']); ?>
         <?php endif; ?>
-        <?php if (empty($page['navigation'])): ?>
-		  <?php print theme('links__system_main_menu', array(
-            'links' => $main_menu,
-            'attributes' => array(
-              'id' => 'main-menu',
-              'class' => array('links', 'clearfix'),
-            ),
-            'heading' => array(
-              'text' => t('Main menu'),
-              'level' => 'h2',
-              'class' => array('element-invisible'),
-            ),
-          )); ?>
-		  <?php print theme('links__system_secondary_menu', array(
-            'links' => $secondary_menu,
-            'attributes' => array(
-              'id' => 'secondary-menu',
-              'class' => array('links', 'clearfix'),
-            ),
-            'heading' => array(
-              'text' => t('Secondary menu'),
-              'level' => 'h2',
-              'class' => array('element-invisible'),
-            ),
-          )); ?>
-        <?php endif; ?>
+ 
       </nav> <!-- /#navigation -->
     <?php endif; ?>
     <?php if ($breadcrumb): print $breadcrumb; endif;?>
