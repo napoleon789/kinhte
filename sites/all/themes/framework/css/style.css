@@ -122,10 +122,13 @@ th { padding-right: 1em; }
 
 #container {
   margin: 0 auto;
-  padding: 0 10px;
-  width: 940px;
+  padding: 0 25px;
+  width: 1078px;
 }
-
+*{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 /**
  * 3.MAIN
  */
@@ -210,7 +213,7 @@ body.sidebar-second #sidebar-second {
 
 #header {
   margin: 0;
-  padding: 2.5em 0 0;
+  padding: 0;
   position: relative;
 }
 
@@ -488,3 +491,80 @@ ul.secondary a.active {
 
 /* display block */
 .display-block { display: block; }
+
+
+/*============= custom by duyenpt =============*/
+
+body {
+    font: 14px/1.5 "Open Sans", Arial, sans-serif;
+    /* disabled for Chrome 38 bug
+    text-rendering: optimizeLegibility;*/
+}
+/* header */
+#header #site-name-slogan{
+    display: none;
+}
+.tb-megamenu .nav > li > a:focus,
+.tb-megamenu .nav > li > a:hover, .tb-megamenu .nav li.dropdown.open > .dropdown-toggle, .tb-megamenu .nav li.dropdown.open.active > .dropdown-toggle > a:hover, .tb-megamenu .dropdown-menu li > a:hover,
+.tb-megamenu .dropdown-menu li > a:focus,
+.tb-megamenu .dropdown-submenu:hover > a {
+    background-color: #1e2935 !important;
+    color: #fff !important;
+}
+.tb-megamenu{
+    background-color: #19232d;
+    background-image: none;
+    border-bottom:2px solid #2f4154;
+    color:#efefef;
+    text-transform: uppercase;
+}
+.tb-megamenu .dropdown-menu{
+    background-color: #1e2935;
+}
+.tb-megamenu .nav > li span{
+    line-height: 43px;
+}
+.tb-megamenu .nav > li > a{
+    font-weight: normal;
+    color: #fff;
+    padding: 0 18px;
+    border:none;
+    background: none;
+    line-height: 43px;
+    -webkit-transition: background ease 0.3s;
+    transition: background ease 0.3s;
+}
+.tb-megamenu .nav > li > a:hover{
+    background: #1e2935;
+}
+.tb-megamenu .nav > .active > a, .tb-megamenu .nav > .active > a:hover, .tb-megamenu .nav > .active > a:focus{
+    color: #fff !important;
+}
+.tb-megamenu .nav > .active > a{
+    border-bottom: 2px solid #e54e53;
+    margin-bottom: -2px;
+}
+.tb-megamenu .nav li.dropdown > .dropdown-toggle .caret{
+    border-bottom-color: #fff;
+    border-top-color: #fff;
+    position: relative;
+    top:11px;
+}
+.tb-megamenu .span12.mega-col-nav .mega-inner{
+    padding: 5px 0;
+}
+.tb-megamenu .dropdown-menu li > a{
+    padding: 5px 10px !important;
+    font-size: 13px;
+    text-transform: none;
+    display: block;
+}
+/* e: header */
+
+
+/* responsive */
+@media only screen and (max-width: 1128px) {
+    #container{
+        width: 100%;
+    }
+}
