@@ -665,9 +665,24 @@ img{
     width: 33.3333%;
 }
 /* e: slider home */
+
+/* homepage */
 .page-home #page-title{
     display: none;
 }
+.page-home .panel-2col-stacked .panel-col-first{
+    width: 66.6667%;
+    padding-right: 25px;
+}
+.page-home .panel-2col-stacked .panel-col-first .inside{
+    margin: 0 -12px;
+}
+.page-home .pane-home-chuyenmuc-center{
+    float: left;
+    width: 50%;
+    padding: 0 12px;
+}
+/* e:homepage */
 
 /* responsive */
 @media only screen and (max-width: 1128px) {
