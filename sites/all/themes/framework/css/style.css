@@ -675,14 +675,20 @@ img{
     width: 66.6667%;
     padding-right: 25px;
 }
+.page-home .panel-2col-stacked .panel-col-last{
+    width: 33.3333%;
+}
 .page-home .panel-2col-stacked .panel-col-first .inside{
-    margin: 0 -12px;
+    margin: 0 -25px;
 }
 .page-home .pane-home-chuyenmuc-center{
     float: left;
     width: 50%;
-    padding: 0 12px;
+    padding: 0 25px;
     position: relative;
+}
+.page-home .pane-home-chuyenmuc-center:first-child{
+    border-right:1px solid #d9d9d9;
 }
 .page-home .pane-home-chuyenmuc-center .pane-title{
     color: #fff;
@@ -754,7 +760,7 @@ img{
 .page-home .pane-home-chuyenmuc-center .attachment-after .views-row{
     border-bottom: 1px solid #d9d9d9;
     padding-bottom: 10px;
-    margin-bottom: 15px;
+    margin-top: 15px;
 }
 .page-home .pane-home-chuyenmuc-center .attachment-after .views-row:after{
     display: table;
