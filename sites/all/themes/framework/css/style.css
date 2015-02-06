@@ -678,6 +678,9 @@ img{
 .page-home .panel-2col-stacked .panel-col-last{
     width: 33.3333%;
 }
+.page-home .panel-2col-stacked .panel-col-last .inside{
+    margin: 0;
+}
 .page-home .panel-2col-stacked .panel-col-first .inside{
     margin: 0 -25px;
 }
@@ -808,6 +811,7 @@ img{
     padding: 0 14px;
     text-transform: uppercase;
 }
+
 /* e:homepage */
 
 /* responsive */
