@@ -630,6 +630,7 @@ img{
 .panel-col-top.panel-panel .views-field-title a{
     color: #fff;
     text-shadow: 0 1px 1px #000;
+    font-family: "Roboto Slab";
 }
 .pane-home-right-slide .views-row{
     position: relative;
@@ -730,6 +731,7 @@ img{
     margin: 7px 0;
     padding-left: 14px;
     position: relative;
+    font-family: "Roboto Slab";
 }
 .page-home .pane-home-chuyenmuc-center .view-content .views-field-title a{
     color: #19232d;

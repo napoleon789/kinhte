@@ -15,6 +15,7 @@
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,700,700italic|Open+Sans+Condensed:300,300italic,700&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
 </head>
 
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
