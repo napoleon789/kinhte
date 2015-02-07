@@ -800,7 +800,7 @@ img{
 .page-home .pane-home-chuyenmuc-center .attachment-after .views-field-title, .pane-home-right-2 .views-field-title{
     padding: 0;
 }
-
+#term_3 {clear: both;}
 .pane-home-right-2 .pane-title{
     background: none repeat scroll 0 0 #19232d;
     color: #efefef;
