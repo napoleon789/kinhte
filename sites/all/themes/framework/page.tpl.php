@@ -1,5 +1,4 @@
 
-
   <div id="skip-link">
       <div id="container" class="clearfix">
         <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
