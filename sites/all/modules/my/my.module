@@ -350,6 +350,9 @@ function my_block_info() {
   $blocks['noidung'] = array(
     'info' => t('content_detail'),
   );
+  $blocks['block_head'] = array(
+    'info' => t('Content Header'),
+  );
   return $blocks;
 }
 
@@ -369,8 +372,29 @@ function my_block_view($delta = '') {
     case 'noidung':
       $block['content'] = my_get_content_detail();
       break;
+    case 'block_head':
+      $block['content'] = my_content_header();
+      break;
   }
   return $block;
+}
+
+function my_content_header() {
+  $output = '<div class="header_firt"><div class="header1">';
+  $output .= '<ul>';
+  $output .= '<li><a href="#">Giới thiệu</a></li>';
+  $output .= '<li><a href="#">Nội quy</a></li>';
+  $output .= '<li><a href="#">Bản quyền</a></li>';
+  $output .= '</ul>';
+  $output .= '</div>';
+  $output .='<div class="header_sosial">';
+  $output .='<ul>';
+  $output .='<li><a href="#" class="twitter" ><span class="visuallyhidden">Twitter</span></a></li>';
+  $output .='<li><a href="#" class="facebook" ><span class="visuallyhidden">Facebook</span></a></li>';
+  $output .='<li><a href="#" class="youtube" ><span class="visuallyhidden">Youtube</span></a></li>';
+  $output .='</ul>';
+  $output .= '</div></div>';
+  return $output;
 }
 
 function my_get_content_detail() {

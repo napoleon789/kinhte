@@ -223,7 +223,6 @@ body.sidebar-second #sidebar-second {
 }
 
 #header #site-name-slogan {
-  float: left;
   margin: 0 0 1.5em;
 }
 
@@ -505,7 +504,6 @@ img{
 }
 /* header */
 #header #site-name-slogan{
-    display: none;
 }
 .tb-megamenu .nav > li > a:focus,
 .tb-megamenu .nav > li > a:hover, .tb-megamenu .nav li.dropdown.open > .dropdown-toggle, .tb-megamenu .nav li.dropdown.open.active > .dropdown-toggle > a:hover, .tb-megamenu .dropdown-menu li > a:hover,
