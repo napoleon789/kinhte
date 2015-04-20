@@ -353,6 +353,9 @@ function my_block_info() {
   $blocks['block_head'] = array(
     'info' => t('Content Header'),
   );
+  $blocks['block_footer'] = array(
+    'info' => t('Content Footer Custom'),
+  );
   return $blocks;
 }
 
@@ -375,8 +378,23 @@ function my_block_view($delta = '') {
     case 'block_head':
       $block['content'] = my_content_header();
       break;
+    case 'block_footer':
+      $block['content'] = my_content_foorter();
+      break;
   }
   return $block;
+}
+
+function my_content_foorter() {
+  $xemnhieu = views_embed_view('home_right_2' , 'default');
+  $moinhat = views_embed_view('home_right_2' , 'block_1');
+  $phanhoi = views_embed_view('home_right_2' , 'block_2');
+  $output = '<ul>';
+  $output .= '<li><h2>Xem nhiều</h2>'.$xemnhieu.'</li>';
+  $output .= '<li><h2>Mới nhất</h2>'.$moinhat.'</li>';
+  $output .= '<li><h2>Phản hồi nhiều</h2>'.$phanhoi.'</li>';
+  $output .= '</ul>';
+  return $output;
 }
 
 function my_content_header() {
