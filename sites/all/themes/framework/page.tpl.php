@@ -10,8 +10,8 @@
 <?php $block = module_invoke('my', 'block_view', 'block_head');?>
 
   <header id="header" role="banner" class="clearfix">
+      <?php print render($block['content']);?>
       <div id="container" class="clearfix">
-        <?php print render($block['content']);?>
         <?php if ($logo): ?>
           <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" id="logo">
             <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
