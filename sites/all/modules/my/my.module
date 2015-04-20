@@ -398,7 +398,7 @@ function my_content_foorter() {
 }
 
 function my_content_header() {
-  $output = '<div class="header_firt"><div class="header1">';
+  $output = '<div class="header_firt"><div class="clearfix" id="container"><div class="header1">';
   $output .= '<ul>';
   $output .= '<li><a href="#">Giới thiệu</a></li>';
   $output .= '<li><a href="#">Nội quy</a></li>';
@@ -411,7 +411,7 @@ function my_content_header() {
   $output .='<li><a href="#" class="facebook" ><span class="visuallyhidden">Facebook</span></a></li>';
   $output .='<li><a href="#" class="youtube" ><span class="visuallyhidden">Youtube</span></a></li>';
   $output .='</ul>';
-  $output .= '</div></div>';
+  $output .= '</div></div></div>';
   return $output;
 }
 
