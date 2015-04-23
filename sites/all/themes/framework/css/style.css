@@ -765,6 +765,10 @@ img{
 }
 .page-home .pane-home-chuyenmuc-center .view-content .views-field.views-field-body .field-content{
     min-height: 0;
+    font-size: 13px;
+}
+.page-home .pane-home-chuyenmuc-center .view-content .views-field.views-field-body .field-content P{
+    font-size: 13px;
 }
 .page-home .pane-home-chuyenmuc-center .attachment-after .views-row, .pane-home-right-2 .views-row, .quicktabs-tabpage .view-home-chuyenmuc-center-2 .attachment-after .views-row{
     border-bottom: 1px solid #d9d9d9;
@@ -903,6 +907,9 @@ img{
     color: #949697;
     font-size: 13px;
 }
+.views-field-body .field-content p{
+    font-size: 13px;
+}
 /* e:homepage */
 
 .header_firt{
@@ -967,8 +974,16 @@ img{
 }
 #header #site-name-slogan h1{
     line-height: 135px;
+    font-size: 37px;
+    font-weight: bold;
+    letter-spacing: -1px;
 }
-
+#header #site-name-slogan h1 a{
+    color: #19232d;
+}
+#header #site-name-slogan h1 a #logodo{
+    color:#e54e53;
+}
 .quicktabs-wrapper .item-list{
     background: #f9f9f9;
     font-size: 13px;
@@ -1215,10 +1230,17 @@ img{
     color: #333;
 }
 .node-type-article .pane-node-relate table{
+    table-layout: fixed;
     margin: 0 -25px;
+    width: auto;
 }
 .node-type-article .pane-node-relate table td{
     padding: 0 25px;
+    width: 33.3333%;
+    vertical-align: top;
+}
+.node-type-article .pane-node-relate table td img{
+    width: 100% !important;
 }
 .node-type-article .pane-node-relate .pane-title{
     -moz-border-bottom-colors: none;
@@ -1238,6 +1260,34 @@ img{
     padding: 0 14px;
     text-transform: uppercase;
     color: #e54e53;
+}
+.node-type-article .pane-social-share-social-share{
+    text-align: right;
+    font-size: 0;
+    padding: 5px 0 15px;
+}
+.node-type-article .pane-social-share-social-share a{
+    display: inline-block;
+    font-size: 0;
+    width: 60px;
+    height: 30px;
+    background-repeat: no-repeat;
+    margin-left: 8px;
+}
+.node-type-article .pane-social-share-social-share .social-share-facebook{
+    background-image: url("../images/facebook-2.png");
+}
+.node-type-article .pane-social-share-social-share .social-share-twitter{
+    background-image: url("../images/twitter-2.png");
+}
+.node-type-article .pane-social-share-social-share .social-share-googleplus{
+    background-image: url("../images/google-plus.png");
+}
+.node-type-article .pane-social-share-social-share .social-share-linkedin{
+    background-image: url("../images/in.png");
+}
+.node-type-article .pane-social-share-social-share .social-share-myspace{
+    display: none;
 }
 /* responsive */
 @media only screen and (max-width: 1128px) {
