@@ -1295,3 +1295,79 @@ img{
         width: 100%;
     }
 }
+
+.tb-megamenu{
+    position: relative;
+    height: 45px;
+    border: none;
+}
+.tb-megamenu .btn-navbar i{
+    display: none;
+}
+.tb-megamenu .btn-navbar, .tb-megamenu .btn-navbar:hover, .tb-megamenu .btn-navbar:focus, .tb-megamenu .btn-navbar:active, .tb-megamenu .btn-navbar.active, .tb-megamenu .btn-navbar.disabled, .tb-megamenu .btn-navbar[disabled]{
+    background-image: url("../images/menu.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #e54e53;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+@media only screen and (max-width: 799px) {
+    .tb-megamenu .nav-collapse{
+        margin-top: 18px;
+    }
+
+    .header_firt .header1, .header_firt .header_sosial{
+        float: none;
+        text-align: center;
+    }
+    .header_firt .header1{
+        margin-bottom: 8px;
+    }
+    .panel-col-top.panel-panel .pane-slide-home{
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    .panel-col-top.panel-panel .pane-home-right-slide{
+        display: none;
+    }
+    .page-home .panel-2col-stacked .panel-col-first{
+        width: 100%;
+    }
+    .page-home .panel-2col-stacked .panel-col-last{
+        width: 100%;
+    }
+    #footer ul li{
+        width: 100%;
+    }
+    .page-taxonomy .panel-2col .panel-col-first, .node-type-article .panel-2col .panel-col-first, .page-taxonomy .panel-2col .panel-col-last, .node-type-article .panel-2col .panel-col-last{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .page-home .pane-home-chuyenmuc-center, .page-home .pane-home-chuyenmuc-center:first-child, .page-home #term_3{
+        width: 100%;
+        border: none;
+    }
+    .quicktabs-wrapper .item-list ul{
+        display: none;
+    }
+    .quicktabs-wrapper.quicktabs-style-nostyle{
+        width: 100%;
+        overflow: hidden;
+    }
+    .quicktabs-tabpage .view-home-chuyenmuc-center-2 .view-content, .quicktabs-tabpage .view-home-chuyenmuc-center-2 .attachment-after{
+        width: 100%;
+        border: none;
+    }
+    .pane-home-3{
+        width: 100%;
+    }
+}
