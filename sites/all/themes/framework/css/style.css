@@ -958,6 +958,8 @@ img{
 }
 .header_firt .header_sosial a span{
     font-size: 0;
+	text-indent:-999px;
+	text-align:left;
 }
 .header_firt .header_sosial .twitter{
     background-image: url("../images/twitter.png");
@@ -1370,4 +1372,11 @@ img{
     .pane-home-3{
         width: 100%;
     }
+	.node-type-article .pane-node-relate table td, .page-taxonomy .panel-2col .panel-col-first table td{
+		width:100%;
+		float:left;
+	}
+	.node-type-article .pane-node-relate table td img{
+		width:auto !import;
+	}
 }
